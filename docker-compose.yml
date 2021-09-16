@@ -1,0 +1,43 @@
+version: "3"
+services:
+  db:
+    container_name: ${PROJECT_NAME}_db
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      TZ: Asia/Tokyo
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - db-data:/var/lib/mysql:cached
+      - ./docker/db/config/:/etc/mysql/conf.d
+
+  server:
+    container_name: ${PROJECT_NAME}_server
+    build:
+      context: .
+      dockerfile: ./docker/server/Dockerfile
+    environment:
+      DB_HOST: ${PROJECT_NAME}_db
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+    # command: npm run start
+    volumes:
+      - ./server:/home/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+
+volumes:
+  db-data:
+  bundle:
+    driver: local
