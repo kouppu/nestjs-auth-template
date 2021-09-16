@@ -10,7 +10,7 @@
 
 ```bash
 $ docker-compose up -d
-$ d exec -it nestjs_auth_template_server sh
+$ docker exec -it nestjs_auth_template_server sh
 $ npm install
 ```
 
@@ -19,7 +19,7 @@ $ npm install
 ### Execute migration and run server
 
 ```bash
-$ d exec -it nestjs_auth_template_server sh
+$ docker exec -it nestjs_auth_template_server sh
 $ npm run build
 $ npx typeorm migration:run
 $ npm run start:dev
