@@ -7,7 +7,7 @@ import {
   Get,
   Request,
   Post,
-  Put,
+  Patch,
   Delete,
   UseGuards,
   NotFoundException,
@@ -49,7 +49,7 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':id')
+  @Patch(':id')
   async update(
     @Request() req: { user: User },
     @Body() user: UpdateUserDTO,
